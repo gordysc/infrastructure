@@ -4,7 +4,7 @@ sqlserver/kill:
 
 .PHONY: sqlserver/logs # Shows sqlserver container logs
 sqlserver/logs:
-	docker compose logs --follow --since 2m sqlserver
+	docker compose logs --follow --since 5m sqlserver
 
 .PHONY: sqlserver/nuke # Kills sqlserver container and removes volumes
 sqlserver/nuke: sqlserver/kill

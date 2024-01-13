@@ -4,7 +4,7 @@ postgres/kill:
 
 .PHONY: postgres/logs # Shows postgres container logs
 postgres/logs:
-	docker compose logs --follow --since 2m postgres
+	docker compose logs --follow --since 5m postgres
 
 .PHONY: postgres/nuke # Kills postgres container and removes volumes
 postgres/nuke: postgres/kill

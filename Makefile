@@ -48,6 +48,10 @@ sqlserver/help:
 vault/help:
 	@make help-for section=vault
 
+.PHONY: eventstore/help # Show help for eventstore targets
+eventstore/help:
+	@make help-for section=eventstore
+
 help-for:
 	@echo "Usage: make [target]"
 	@echo ""

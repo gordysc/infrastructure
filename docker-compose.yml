@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   postgres:
     image: postgres:16-alpine
@@ -63,9 +63,17 @@ services:
       - "SA_PASSWORD=P@55w0rd"
       - "MSSQL_PID=Developer"
     volumes:
-      - sqldata:/var/opt/mssql
+      - sqlserver:/var/opt/mssql
     healthcheck:
-      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-Usa", "-PP@55w0rd", "-Q", "select 1"]
+      test:
+        [
+          "CMD",
+          "/opt/mssql-tools/bin/sqlcmd",
+          "-Usa",
+          "-PP@55w0rd",
+          "-Q",
+          "select 1",
+        ]
       interval: 1s
       retries: 20
     networks:
@@ -86,6 +94,28 @@ services:
     networks:
       - infrastructure
 
+  eventstore:
+    image: eventstore/eventstore:23.10.0-alpha-arm64v8
+    container_name: eventstore
+    restart: always
+    ports:
+      - 2113:2113
+      - 1113:1113
+    environment:
+      EVENTSTORE_CLUSTER_SIZE: 1
+      EVENTSTORE_RUN_PROJECTIONS: All
+      EVENTSTORE_START_STANDARD_PROJECTIONS: true
+      EVENTSTORE_EXT_TCP_PORT: 1113
+      EVENTSTORE_HTTP_PORT: 2113
+      EVENTSTORE_INSECURE: true
+      EVENTSTORE_ENABLE_EXTERNAL_TCP: true
+      EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP: true
+    volumes:
+      - eventstore-data:/var/lib/eventstore
+      - eventstore-logs:/var/log/eventstore
+    networks:
+      - infrastructure
+
 networks:
   infrastructure:
     driver: bridge
@@ -95,5 +125,7 @@ volumes:
   mysql:
   postgres:
   redis:
-  sqldata:
+  sqlserver:
   vault-file:
+  eventstore-data:
+  eventstore-logs:
