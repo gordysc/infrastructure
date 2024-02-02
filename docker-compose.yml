@@ -116,6 +116,16 @@ services:
     networks:
       - infrastructure
 
+  sftp:
+    image: atmoz/sftp
+    ports:
+      - 2222:22
+    command: user:password:1001:12345:/storage
+    volumes:
+      - sftp:/storage
+    networks:
+      - infrastructure
+
 networks:
   infrastructure:
     driver: bridge
@@ -129,3 +139,4 @@ volumes:
   vault-file:
   eventstore-data:
   eventstore-logs:
+  sftp:
